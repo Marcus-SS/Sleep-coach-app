@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { SessionProvider } from './SessionProvider';
-import BottomNav from '@/components/BottomNav';
+import RootLayoutContent from "@/components/RootLayoutContent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,15 +25,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <SessionProvider>
-          <div className="pb-16">
-        {children}
-          </div>
-          <BottomNav />
-        </SessionProvider>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <RootLayoutContent>
+          {children}
+        </RootLayoutContent>
       </body>
     </html>
   );

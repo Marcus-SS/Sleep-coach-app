@@ -18,6 +18,7 @@ export default function OnboardingForm() {
     stress_level: '',
     social_life: '',
     hobbies: '',
+    insomnia_severity: '',
   });
 
   useEffect(() => {
@@ -40,6 +41,7 @@ export default function OnboardingForm() {
           stress_level: data.stress_level?.toString() || '',
           social_life: data.social_life || '',
           hobbies: data.hobbies || '',
+          insomnia_severity: data.insomnia_severity || '',
         });
       }
       setIsLoading(false);
@@ -69,6 +71,7 @@ export default function OnboardingForm() {
         stress_level: parseInt(formData.stress_level),
         social_life: formData.social_life,
         hobbies: formData.hobbies,
+        insomnia_severity: formData.insomnia_severity,
       };
       console.log('session.user.id:', session.user.id);
       console.log('user_id in upsert:', data.user_id);
@@ -196,6 +199,35 @@ export default function OnboardingForm() {
             rows={3}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
           />
+        </div>
+
+        <div>
+          <label htmlFor="insomnia_severity" className="block text-sm font-medium text-gray-700 mb-2">
+            How severe is your insomnia?
+          </label>
+          <div className="flex items-center gap-2 w-full">
+            <select
+              name="insomnia_severity"
+              id="insomnia_severity"
+              required
+              value={formData.insomnia_severity}
+              onChange={e => setFormData({ ...formData, insomnia_severity: e.target.value })}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 max-w-xs"
+            >
+              <option value="">Select severity</option>
+              <option value="none">None</option>
+              <option value="mild">Mild</option>
+              <option value="moderate">Moderate</option>
+              <option value="severe">Severe</option>
+            </select>
+            <button
+              type="button"
+              onClick={() => window.location.href = '/insomnia-assessment'}
+              className="ml-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-xs whitespace-nowrap"
+            >
+              Find out
+            </button>
+          </div>
         </div>
       </div>
 

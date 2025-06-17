@@ -4,6 +4,11 @@
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/auth-ui-react": "^0.4.7",
     "@supabase/auth-ui-shared": "^0.1.8",
+<<<<<<< HEAD
+=======
+    "@supabase/ssr": "^0.6.1",
+    "next": "^15.3.3",
+>>>>>>> 99057d7d63752180a4a7d14e7de7716f213bfa89
     "node-fetch": "^3.3.2"
   }
 }
