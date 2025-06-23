@@ -32,26 +32,64 @@ export default function OnboardingPage() {
     checkSession();
   }, [router, supabase]);
 
+  const containerStyles = {
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    background: 'linear-gradient(135deg, #843484 0%, #47154f 100%)',
+  };
+
+  const boxShadow = {
+    boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+  };
+
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+      <div className="min-h-screen flex items-center justify-center p-5" style={containerStyles}>
+        <div className="bg-white rounded-[20px] p-10 text-center max-w-md w-full" style={boxShadow}>
+          <div className="mx-auto mb-6 w-12 h-12 rounded-full border-4 border-gray-200 border-t-4"
+               style={{
+                 borderTopColor: '#843484',
+                 animation: 'spin 1s linear infinite'
+               }}></div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Loading your experience...</h2>
+          <p className="text-gray-600 text-base">Setting up your sleep journey</p>
         </div>
+        <style jsx>{`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}</style>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Welcome to Sleep Coach</h1>
-          <p className="mt-2 text-gray-600">Let's get you set up with your sleep tracking journey</p>
+    <div className="min-h-screen flex items-center justify-center p-5" style={containerStyles}>
+      <div className="bg-white rounded-[20px] max-w-xl w-full p-10" style={boxShadow}>
+
+        {/* Progress bar */}
+        <div className="w-full h-2 bg-[#f0f0f0] rounded-full mb-8 overflow-hidden">
+          <div
+            className="h-full rounded-full transition-all duration-300 ease-out"
+            style={{
+              background: 'linear-gradient(90deg, #5d905c, #8cc455)',
+              width: '25%' // Make dynamic later
+            }}
+          ></div>
         </div>
+
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            🌙 Discover Your Best Sleep
+          </h1>
+          <p className="text-gray-600 text-base leading-relaxed">
+            Let's personalize your experience with a few quick questions.
+          </p>
+        </div>
+
         <OnboardingForm />
       </div>
     </div>
   );
-} 
+}

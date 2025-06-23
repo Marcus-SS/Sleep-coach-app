@@ -60,10 +60,16 @@ export default function OnboardingForm() {
     setError(null);
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError) {
+        console.error('Error getting session:', sessionError);
+        throw new Error(`Failed to get session: ${sessionError.message}`);
+      }
+      
       if (!session) {
         throw new Error('No active session');
       }
+
       const data = {
         user_id: session.user.id,
         chronotype: formData.chronotype,
@@ -73,20 +79,34 @@ export default function OnboardingForm() {
         hobbies: formData.hobbies,
         insomnia_severity: formData.insomnia_severity,
       };
-      console.log('session.user.id:', session.user.id);
-      console.log('user_id in upsert:', data.user_id);
-      const { error } = await supabase.from('user_profiles').upsert([data], { onConflict: 'user_id' });
-      if (error) {
-        console.error('Supabase upsert error:', error);
-        throw error;
+
+      console.log('Attempting to save form data:', data);
+
+      const { error: upsertError } = await supabase
+        .from('user_profiles')
+        .upsert([data], { 
+          onConflict: 'user_id',
+          ignoreDuplicates: false
+        });
+
+      if (upsertError) {
+        console.error('Supabase upsert error details:', {
+          message: upsertError.message,
+          details: upsertError.details,
+          hint: upsertError.hint,
+          code: upsertError.code
+        });
+        throw new Error(`Failed to save profile: ${upsertError.message}`);
       }
+
+      console.log('Successfully saved profile data');
       router.push('/dashboard');
     } catch (err) {
       console.error('Form submission error:', err);
-      if (err && typeof err === 'object' && 'message' in err) {
-        setError((err as any).message);
+      if (err instanceof Error) {
+        setError(err.message);
       } else {
-        setError(JSON.stringify(err));
+        setError('An unexpected error occurred while saving your profile');
       }
     } finally {
       setIsLoading(false);

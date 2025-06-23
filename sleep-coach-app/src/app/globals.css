@@ -19,3 +19,22 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.btn {
+  @apply transition-all duration-200 cursor-pointer;
+}
+.btn-primary {
+  background: linear-gradient(90deg, #5d905c, #8cc455);
+  color: white;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(93, 144, 92, 0.4);
+}
+.btn-secondary {
+  background-color: #f0f0f0;
+  color: #666;
+}
+.btn-secondary:hover {
+  background-color: #e0e0e0;
+}

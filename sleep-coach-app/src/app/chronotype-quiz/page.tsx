@@ -208,17 +208,27 @@ export default function ChronotypeQuiz() {
 
   if (result) {
     return (
-      <div className="max-w-xl mx-auto mt-10 bg-white p-8 rounded shadow text-center">
-        <h1 className="text-2xl font-bold mb-4">Your Chronotype Result</h1>
-        <div className="text-lg mb-2">Score: <b>{result.score}</b></div>
-        <div className="text-xl font-semibold mb-6">{result.chronotype}</div>
-        <button
-          onClick={handleSave}
-          disabled={isSubmitting}
-          className="px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-        >
-          {isSubmitting ? 'Saving...' : 'Save and return to onboarding'}
-        </button>
+      <div className="min-h-screen flex items-center justify-center p-5"
+           style={{
+             background: 'linear-gradient(135deg, #843484 0%, #47154f 100%)',
+             fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+           }}>
+        <div className="bg-white rounded-[20px] max-w-xl w-full p-10 text-center"
+             style={{ boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}>
+          <div className="chronotype-result bg-gradient-to-br from-[#843484] to-[#47154f] text-white p-8 rounded-[15px] mb-6">
+            <h2 className="text-3xl font-bold mb-2">Your Chronotype</h2>
+            <p className="text-xl font-semibold">{result.chronotype}</p>
+            <p className="mt-4 text-base opacity-90">Score: <b>{result.score}</b></p>
+          </div>
+    
+          <button
+            onClick={handleSave}
+            disabled={isSubmitting}
+            className="btn btn-primary w-full py-3 mt-4 rounded-full"
+          >
+            {isSubmitting ? 'Saving...' : 'Save and return to onboarding'}
+          </button>
+        </div>
       </div>
     );
   }
@@ -226,52 +236,78 @@ export default function ChronotypeQuiz() {
   const q = questions[step];
 
   return (
-    <div className="max-w-xl mx-auto mt-10 bg-white p-8 rounded shadow">
-      <h1 className="text-2xl font-bold mb-6">Chronotype Quiz</h1>
-      <div className="mb-6">
-        <div className="font-medium mb-4">{q.text}</div>
-        <div className="space-y-2">
-          {q.options.map((opt, idx) => (
-            <label key={idx} className={`block p-2 border rounded cursor-pointer ${answers[step] === idx ? 'bg-blue-100 border-blue-400' : 'border-gray-300'}`}>
-              <input
-                type="radio"
-                name={`q${step}`}
-                checked={answers[step] === idx}
-                onChange={() => handleSelect(idx)}
-                className="mr-2"
-              />
-              {opt}
-            </label>
-          ))}
+    <div className="min-h-screen flex items-center justify-center p-5"
+         style={{
+           background: 'linear-gradient(135deg, #843484 0%, #47154f 100%)',
+           fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+         }}>
+      <div className="bg-white rounded-[20px] max-w-2xl w-full p-10"
+           style={{ boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}>
+  
+        {/* Progress Bar */}
+        <div className="w-full h-2 bg-[#f0f0f0] rounded-full mb-8 overflow-hidden">
+          <div
+            className="h-full rounded-full transition-all duration-300 ease-out"
+            style={{
+              background: 'linear-gradient(90deg, #5d905c, #8cc455)',
+              width: `${((step + 1) / questions.length) * 100}%`
+            }}
+          ></div>
         </div>
-      </div>
-      <div className="flex justify-between">
-        <button
-          onClick={handleBack}
-          disabled={step === 0}
-          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-        >
-          Back
-        </button>
-        {step < questions.length - 1 ? (
+  
+        {/* Question Section */}
+        <h1 className="text-3xl font-bold text-gray-800 mb-3">🌙 Chronotype Quiz</h1>
+        <p className="text-gray-600 text-base mb-8">Answer the 19-question MEQ to discover your natural rhythm.</p>
+  
+        <div className="mb-6">
+          <div className="font-medium text-lg text-gray-800 mb-4 leading-relaxed">{q.text}</div>
+          <div className="flex flex-col gap-3">
+            {q.options.map((opt, idx) => (
+              <div
+                key={idx}
+                onClick={() => handleSelect(idx)}
+                className={`option p-4 rounded-lg border-2 text-left cursor-pointer transition-all
+                  ${answers[step] === idx
+                    ? 'bg-[#843484] text-white border-[#843484]'
+                    : 'bg-white text-gray-800 border-[#e0e0e0] hover:bg-[#faf7fa] hover:border-[#843484]'}`}
+              >
+                {opt}
+              </div>
+            ))}
+          </div>
+        </div>
+  
+        {/* Navigation Buttons */}
+        <div className="flex justify-between mt-8">
           <button
-            onClick={handleNext}
-            disabled={answers[step] === null}
-            className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+            onClick={handleBack}
+            disabled={step === 0}
+            className="btn btn-secondary px-6 py-3 rounded-full"
           >
-            Next
+            Back
           </button>
-        ) : (
-          <button
-            onClick={handleFinish}
-            disabled={answers[step] === null}
-            className="px-4 py-2 bg-green-500 text-white rounded disabled:opacity-50"
-          >
-            See Result
-          </button>
-        )}
+          {step < questions.length - 1 ? (
+            <button
+              onClick={handleNext}
+              disabled={answers[step] === null}
+              className="btn btn-primary px-6 py-3 rounded-full"
+            >
+              Next
+            </button>
+          ) : (
+            <button
+              onClick={handleFinish}
+              disabled={answers[step] === null}
+              className="btn btn-primary px-6 py-3 rounded-full"
+            >
+              See Result
+            </button>
+          )}
+        </div>
+  
+        <div className="mt-6 text-sm text-gray-500 text-center">Question {step + 1} of {questions.length}</div>
       </div>
-      <div className="mt-4 text-sm text-gray-500">Question {step + 1} of {questions.length}</div>
     </div>
   );
+  
 } 

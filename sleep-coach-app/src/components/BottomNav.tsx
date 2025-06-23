@@ -8,7 +8,6 @@ export default function BottomNav() {
 
   const navItems = [
     { name: 'Today', path: '/dashboard', icon: '📊' },
-    { name: 'Calm', path: '/relax', icon: '🧘' },
     { name: 'Sleep Log', path: '/sleep-log', icon: '📝' },
     { name: 'Coach', path: '/coach', icon: '👨‍🏫' },
     { name: 'Profile', path: '/profile', icon: '👤' },

@@ -138,7 +138,16 @@ export async function POST(request: Request) {
     // Build onboarding context string
     let onboardingContextString = '';
     if (onboardingContext) {
-      onboardingContextString = `\n\n# User Onboarding Profile\n- Chronotype: ${onboardingContext.chronotype || 'Unknown'}\n- Work schedule: ${onboardingContext.work_schedule || 'Unknown'}\n- Stress level: ${onboardingContext.stress_level || 'Unknown'}\n- Social life: ${onboardingContext.social_life || 'Unknown'}\n- Hobbies: ${onboardingContext.hobbies || 'Unknown'}`;
+      // Format sleep logs data
+      const sleepLogsString = onboardingContext.sleep_logs?.length > 0
+        ? `\n\n# Recent Sleep Logs\n${onboardingContext.sleep_logs.map(log => 
+            `- Date: ${log.date}\n  Events: ${log.events.map((event: { type: 'fall_asleep' | 'wake_up'; time: string }) => 
+              `${event.type === 'fall_asleep' ? 'Fell asleep' : 'Woke up'} at ${event.time}`
+            ).join(', ')}`
+          ).join('\n')}`
+        : '\n\n# Sleep Logs\nNo recent sleep logs available';
+
+      onboardingContextString = `\n\n# User Onboarding Profile\n- Chronotype: ${onboardingContext.chronotype || 'Unknown'}\n- Work schedule: ${onboardingContext.work_schedule || 'Unknown'}\n- Stress level: ${onboardingContext.stress_level || 'Unknown'}\n- Social life: ${onboardingContext.social_life || 'Unknown'}\n- Hobbies: ${onboardingContext.hobbies || 'Unknown'}\n- Insomnia Severity: ${onboardingContext.insomnia_severity || 'Unknown'}${sleepLogsString}`;
     }
     console.log('DEBUG: onboardingContextString:', onboardingContextString);
 
