@@ -37,7 +37,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
       </head>
       <body className={inter.className}>
-        {children}
+          {children}
         <ServiceWorkerRegistration />
       </body>
     </html>

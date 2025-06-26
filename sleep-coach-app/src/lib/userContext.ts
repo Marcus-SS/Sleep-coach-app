@@ -20,6 +20,24 @@ export async function getUserSleepLogs(userId: string, accessToken?: string) {
   return data;
 }
 
+export async function getUserPreferences(userId: string, accessToken?: string) {
+  const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+    global: { headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {} }
+  });
+  
+  const { data, error } = await supabase
+    .from('user_preferences')
+    .select('*')
+    .eq('user_id', userId)
+    .single();
+
+  if (error && error.code !== 'PGRST116') { // PGRST116 is "not found" error
+    throw error;
+  }
+  
+  return data;
+}
+
 export async function getUserOnboardingContext(userId: string, accessToken?: string) {
   const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     global: { headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {} }
@@ -32,13 +50,19 @@ export async function getUserOnboardingContext(userId: string, accessToken?: str
     .eq('user_id', userId)
     .single();
 
-  if (profileError) throw profileError;
+  if (profileError && profileError.code !== 'PGRST116') {
+    throw profileError;
+  }
+
+  // Get user preferences data
+  const preferencesData = await getUserPreferences(userId, accessToken);
 
   // Get sleep logs data
   const sleepLogs = await getUserSleepLogs(userId, accessToken);
 
   return {
     ...profileData,
+    preferences: preferencesData,
     sleep_logs: sleepLogs
   };
 } 

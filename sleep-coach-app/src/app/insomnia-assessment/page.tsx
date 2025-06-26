@@ -303,8 +303,8 @@ const InsomniaAssessment: FC = () => {
               <div style={{fontSize: '1.2rem', textAlign: 'right'}}>
                 <div>{result.severity}</div>
                 <div style={{fontSize: '0.9rem', opacity: 0.8}}>Insomnia Level</div>
-              </div>
             </div>
+          </div>
 
             <div style={{
               background: 'rgba(255,255,255,0.1)',
@@ -327,7 +327,7 @@ const InsomniaAssessment: FC = () => {
                 <div style={{marginBottom: '8px'}}>• 8-14: Mild insomnia</div>
                 <div style={{marginBottom: '8px'}}>• 15-21: Moderate insomnia</div>
                 <div>• 22-28: Severe insomnia</div>
-              </div>
+          </div>
             </div>
           </div>
 
@@ -335,7 +335,7 @@ const InsomniaAssessment: FC = () => {
             <strong>Ready for better sleep?</strong> Our personalized sleep coaching program can help you achieve your goals with evidence-based techniques.
           </p>
 
-          <button 
+                <button
             style={buttonStyle('primary')}
             onClick={() => window.location.reload()}
             onMouseOver={(e) => {
@@ -348,7 +348,7 @@ const InsomniaAssessment: FC = () => {
             }}
           >
             Take Assessment Again
-          </button>
+                </button>
         </div>
         <BottomNav />
       </div>
@@ -383,7 +383,7 @@ const InsomniaAssessment: FC = () => {
           
           <div>
             {currentQuestion.options.map((option, index) => (
-              <button
+                <button
                 key={index}
                 onClick={() => handleSelect(index)}
                 style={optionStyle(answers[step] === index)}
@@ -401,16 +401,16 @@ const InsomniaAssessment: FC = () => {
                 }}
               >
                 {option}
-              </button>
-            ))}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
 
         <div style={{display: 'flex', justifyContent: 'space-between', marginTop: '40px'}}>
-          <button 
+            <button
             style={buttonStyle('secondary', step === 0)}
-            onClick={handleBack}
-            disabled={step === 0}
+              onClick={handleBack}
+              disabled={step === 0}
             onMouseOver={(e) => {
               if (!e.currentTarget.disabled) e.currentTarget.style.background = '#e0e0e0';
             }}
@@ -419,13 +419,13 @@ const InsomniaAssessment: FC = () => {
             }}
           >
             Previous
-          </button>
-          
-          {step === questions.length - 1 ? (
-            <button 
+            </button>
+            
+            {step === questions.length - 1 ? (
+              <button
               style={buttonStyle('primary', answers[step] === null)}
-              onClick={handleFinish}
-              disabled={answers[step] === null}
+                onClick={handleFinish}
+                disabled={answers[step] === null}
               onMouseOver={(e) => {
                 if (!e.currentTarget.disabled) {
                   e.currentTarget.style.transform = 'translateY(-2px)';
@@ -438,12 +438,12 @@ const InsomniaAssessment: FC = () => {
               }}
             >
               Finish Assessment
-            </button>
-          ) : (
-            <button 
+              </button>
+            ) : (
+              <button
               style={buttonStyle('primary', answers[step] === null)}
-              onClick={handleNext}
-              disabled={answers[step] === null}
+                onClick={handleNext}
+                disabled={answers[step] === null}
               onMouseOver={(e) => {
                 if (!e.currentTarget.disabled) {
                   e.currentTarget.style.transform = 'translateY(-2px)';
@@ -454,10 +454,10 @@ const InsomniaAssessment: FC = () => {
                 e.currentTarget.style.transform = 'none';
                 e.currentTarget.style.boxShadow = 'none';
               }}
-            >
+              >
               Next
-            </button>
-          )}
+              </button>
+            )}
         </div>
       </div>
       <BottomNav />

@@ -4,11 +4,14 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createBrowserClient } from '@supabase/ssr';
 import OnboardingForm from '@/components/OnboardingForm';
+import UserPreferences from '@/components/UserPreferences';
 import BottomNav from '@/components/BottomNav';
+import { Settings, User } from 'lucide-react';
 
 export default function ProfilePage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'profile' | 'preferences'>('profile');
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -75,7 +78,7 @@ export default function ProfilePage() {
             className="h-full rounded-full transition-all duration-300 ease-out"
             style={{
               background: 'linear-gradient(90deg, #5d905c, #8cc455)',
-              width: '25%' // Make dynamic later
+              width: activeTab === 'profile' ? '50%' : '100%'
             }}
           ></div>
         </div>
@@ -90,7 +93,41 @@ export default function ProfilePage() {
           </p>
         </div>
 
-        <OnboardingForm />
+        {/* Tab Navigation */}
+        <div className="flex mb-8 bg-gray-100 rounded-lg p-1">
+          <button
+            onClick={() => setActiveTab('profile')}
+            className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md font-medium transition-colors ${
+              activeTab === 'profile'
+                ? 'bg-white text-gray-800 shadow-sm'
+                : 'text-gray-600 hover:text-gray-800'
+            }`}
+          >
+            <User size={18} />
+            Profile
+          </button>
+          <button
+            onClick={() => setActiveTab('preferences')}
+            className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md font-medium transition-colors ${
+              activeTab === 'preferences'
+                ? 'bg-white text-gray-800 shadow-sm'
+                : 'text-gray-600 hover:text-gray-800'
+            }`}
+          >
+            <Settings size={18} />
+            Sleep Preferences
+          </button>
+        </div>
+
+        {/* Tab Content */}
+        {activeTab === 'profile' ? (
+          <OnboardingForm />
+        ) : (
+          <UserPreferences 
+            showAsModal={false}
+            title="Sleep Preferences"
+          />
+        )}
       </div>
       <BottomNav />
     </div>

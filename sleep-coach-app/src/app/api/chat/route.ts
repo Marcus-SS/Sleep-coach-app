@@ -3,6 +3,7 @@ import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { generateChatResponse } from '@/lib/gemini';
 import { getUserOnboardingContext } from '@/lib/userContext';
+import { formatPreferencesForAI } from '@/lib/preferencesHelper';
 
 // Custom error types
 class ChatError extends Error {
@@ -147,7 +148,10 @@ export async function POST(request: Request) {
           ).join('\n')}`
         : '\n\n# Sleep Logs\nNo recent sleep logs available';
 
-      onboardingContextString = `\n\n# User Onboarding Profile\n- Chronotype: ${onboardingContext.chronotype || 'Unknown'}\n- Work schedule: ${onboardingContext.work_schedule || 'Unknown'}\n- Stress level: ${onboardingContext.stress_level || 'Unknown'}\n- Social life: ${onboardingContext.social_life || 'Unknown'}\n- Hobbies: ${onboardingContext.hobbies || 'Unknown'}\n- Insomnia Severity: ${onboardingContext.insomnia_severity || 'Unknown'}${sleepLogsString}`;
+      // Format user preferences data
+      const preferencesString = `\n\n${formatPreferencesForAI(onboardingContext.preferences)}`;
+
+      onboardingContextString = `\n\n# User Onboarding Profile\n- Chronotype: ${onboardingContext.chronotype || 'Unknown'}\n- Work schedule: ${onboardingContext.work_schedule || 'Unknown'}\n- Stress level: ${onboardingContext.stress_level || 'Unknown'}\n- Social life: ${onboardingContext.social_life || 'Unknown'}\n- Hobbies: ${onboardingContext.hobbies || 'Unknown'}\n- Insomnia Severity: ${onboardingContext.insomnia_severity || 'Unknown'}${preferencesString}${sleepLogsString}`;
     }
     console.log('DEBUG: onboardingContextString:', onboardingContextString);
 
